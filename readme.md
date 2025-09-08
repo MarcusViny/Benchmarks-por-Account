@@ -1,5 +1,9 @@
 # Benchmarks por Account – Teste Rápido
 
+> Supondo que sua máquina já tenha Docker instalado. Caso não tenha, instale antes de prosseguir:
+> - Guia oficial de instalação: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+
+
 ## 1. Pré-requisitos
 
 ### Docker Compose
