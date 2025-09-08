@@ -9,10 +9,11 @@ docker compose up -d --build
 ```
 - Isso cria o banco `benchmarks` já populado com contas, benchmarks, controles e histórico.
 
-2. Acessar o PostgreSQL:
+2. Acessar o PostgreSQL e executar os testes:
 ```bash
 docker exec -it benchmarks-db psql -U user -d benchmarks
 ```
+- Após acessar o `psql`, execute os SELECTs listados na Seção 4 (Q1, Q2 e Q3) para validar os dados, estados e históricos.
 
 3. Parar o ambiente:
 ```bash
