@@ -1,38 +1,38 @@
 ```mermaid
 erDiagram
-    ACCOUNT {
+    Account {
         id
         name
     }
 
-    BENCHMARK {
+    Benchmark {
         id
         name
     }
 
-    ACCOUNT_BENCHMARK {
-        account_id
-        benchmark_id
+    AccountBenchmark {
+        accountId
+        benchmarkId
     }
 
-    CONTROLE {
+    Controle {
         id
         name
         description
         state
-        benchmark_id
+        benchmarkId
     }
 
-    CONTROLE_HISTORICO {
+    ControleHistorico {
         id
-        account_id
-        controle_id
+        accountId
+        controleId
         state
         timestamp
     }
 
-    ACCOUNT ||--o{ ACCOUNT_BENCHMARK : relaciona
-    BENCHMARK ||--o{ ACCOUNT_BENCHMARK : relaciona
-    BENCHMARK ||--o{ CONTROLE : possui
-    CONTROLE ||--o{ CONTROLE_HISTORICO : registra
-    ACCOUNT ||--o{ CONTROLE_HISTORICO : registra
+    Account ||--o{ AccountBenchmark : relaciona
+    Benchmark ||--o{ AccountBenchmark : relaciona
+    Benchmark ||--o{ Controle : possui
+    Controle ||--o{ ControleHistorico : registra
+    Account ||--o{ ControleHistorico : registra
