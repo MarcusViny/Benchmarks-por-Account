@@ -20,7 +20,7 @@ CREATE TABLE ACCOUNT_BENCHMARK (
     deletedAt TIMESTAMP
 );
 
-CREATE TABLE CONTROLE (
+CREATE TABLE control (
     id SERIAL PRIMARY KEY,
     benchmark_id INT REFERENCES BENCHMARK(id),
     name VARCHAR(100),
@@ -30,9 +30,9 @@ CREATE TABLE CONTROLE (
     deletedAt TIMESTAMP
 );
 
-CREATE TABLE CONTROLE_HISTORICO (
+CREATE TABLE control_HISTORICO (
     id SERIAL PRIMARY KEY,
-    controle_id INT REFERENCES CONTROLE(id),
+    control_id INT REFERENCES control(id),
     account_id INT REFERENCES ACCOUNT(id),
     state VARCHAR(10),
     timestamp TIMESTAMP,
