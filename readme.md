@@ -1,34 +1,34 @@
 ```mermaid
 erDiagram
     ACCOUNT {
-        int id PK
-        string name
+        id
+        name
     }
 
     BENCHMARK {
-        int id PK
-        string name
+        id
+        name
     }
 
     ACCOUNT_BENCHMARK {
-        int account_id PK FK
-        int benchmark_id PK FK
+        account_id
+        benchmark_id
     }
 
     CONTROLE {
-        int id PK
-        string name
-        string description
-        string state
-        int benchmark_id FK
+        id
+        name
+        description
+        state
+        benchmark_id
     }
 
     CONTROLE_HISTORICO {
-        int id PK
-        int account_id FK
-        int controle_id FK
-        string state
-        datetime timestamp
+        id
+        account_id
+        controle_id
+        state
+        timestamp
     }
 
     ACCOUNT ||--o{ ACCOUNT_BENCHMARK : relaciona
