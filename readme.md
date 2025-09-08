@@ -3,14 +3,14 @@
 
 ### Docker e Docker Compose
 
-- 1. Subir o ambiente
+1. Subir o ambiente
     docker compose up -d --build
 - Isso cria o banco benchmarks já populado com contas, benchmarks, controles e histórico.
 
-- 2. Acessar o PostgreSQL
+2. Acessar o PostgreSQL
     docker exec -it benchmarks-db psql -U user -d benchmarks
 
-- 3. Executar os teste 
+3. Executar os teste 
     (
     Q1 = 
     SELECT a.name AS account, b.name AS benchmark, c.name AS controle, c.state_atual
@@ -47,5 +47,5 @@
         )
             WHERE a.id = 1;)
 
-- 4. Parar o ambiente
+4. Parar o ambiente
     docker compose down
