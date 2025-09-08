@@ -1,3 +1,4 @@
+```mermaid
 erDiagram
     ACCOUNT {
         int id PK
