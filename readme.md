@@ -1,4 +1,3 @@
-```mermaid
 erDiagram
     ACCOUNT {
         int id PK
@@ -11,15 +10,15 @@ erDiagram
     }
 
     ACCOUNT_BENCHMARK {
-        int account_id PK, FK
-        int benchmark_id PK, FK
+        int account_id PK FK
+        int benchmark_id PK FK
     }
 
     CONTROLE {
         int id PK
         string name
         string description
-        enum state  // ok | alarm
+        string state
         int benchmark_id FK
     }
 
@@ -27,7 +26,7 @@ erDiagram
         int id PK
         int account_id FK
         int controle_id FK
-        enum state
+        string state
         datetime timestamp
     }
 
