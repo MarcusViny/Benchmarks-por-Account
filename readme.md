@@ -42,7 +42,7 @@ docker compose down
 - **control**  
   Armazena `id`, `name`, `description`, `benchmark_id` e `state_atual` (ok | alarm). Possui `createdAt` e `deletedAt`.
 
-- **control_Historico**  
+- **control_History**  
   Para registrar mudanças no control. Campos: `id`, `control_id`, `account_id` (quem realizou a mudança), `state`, `timestamp`, `createdAt` e `deletedAt`.
 
 ### Ideias para evolução do banco e monitoramento
@@ -85,7 +85,7 @@ erDiagram
         datetime createdAt
         datetime deletedAt
     }
-    control_HISTORICO {
+    control_history {
         int id PK
         int control_id FK "FK para control.id"
         int account_id FK "FK para Account.id"
@@ -97,8 +97,8 @@ erDiagram
     ACCOUNT ||--o{ ACCOUNT_BENCHMARK : possui
     BENCHMARK ||--o{ ACCOUNT_BENCHMARK : é_acompanhado_por
     BENCHMARK ||--o{ control : possui
-    control ||--o{ control_HISTORICO : registra_alteracoes
-    ACCOUNT ||--o{ control_HISTORICO : realiza_alteracoes
+    control ||--o{ control_history : registra_alteracoes
+    ACCOUNT ||--o{ control_history : realiza_alteracoes
 ```
 
 ---
@@ -131,7 +131,7 @@ FROM Account a
 JOIN Account_Benchmark ab ON ab.account_id = a.id
 JOIN Benchmark b ON b.id = ab.benchmark_id
 JOIN control c ON c.benchmark_id = b.id
-JOIN control_Historico h ON h.control_id = c.id
+JOIN control_history h ON h.control_id = c.id
 WHERE a.id = 1
 AND h.timestamp BETWEEN '2025-09-01' AND '2025-09-08'
 ORDER BY h.timestamp;
@@ -149,9 +149,9 @@ FROM Account a
 JOIN Account_Benchmark ab ON ab.account_id = a.id
 JOIN Benchmark b ON b.id = ab.benchmark_id
 JOIN control c ON c.benchmark_id = b.id
-JOIN control_Historico h ON h.id = (
+JOIN control_history h ON h.id = (
     SELECT h2.id
-    FROM control_Historico h2
+    FROM control_history h2
     WHERE h2.control_id = c.id
     AND h2.timestamp <= '2025-09-05 10:00:00'
     ORDER BY h2.timestamp DESC

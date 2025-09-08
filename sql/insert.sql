@@ -18,7 +18,7 @@ INSERT INTO ACCOUNT_BENCHMARK (account_id, benchmark_id) VALUES
 (3, 4),
 (3, 5);
 
-INSERT INTO control (benchmark_id, name, description, state_atual) VALUES
+INSERT INTO CONTROL (benchmark_id, name, description, state_atual) VALUES
 (1, 'control 1', 'Verifica X', 'ok'),
 (1, 'control 2', 'Verifica Y', 'alarm'),
 (2, 'control 3', 'Verifica Z', 'ok'),
@@ -26,7 +26,7 @@ INSERT INTO control (benchmark_id, name, description, state_atual) VALUES
 (4, 'control 5', 'Verifica B', 'alarm'),
 (5, 'control 6', 'Verifica C', 'ok');
 
-INSERT INTO control_HISTORICO (control_id, account_id, state, timestamp) VALUES
+INSERT INTO CONTROL_HISTORY (control_id, account_id, state, timestamp) VALUES
 (1, 1, 'alarm', '2025-09-01 10:00:00'),
 (1, 1, 'ok',    '2025-09-02 09:00:00'),
 (2, 1, 'ok',    '2025-09-01 10:05:00'),
