@@ -11,7 +11,7 @@
 ```bash
 docker compose up -d --build
 ```
-- Isso cria o banco `benchmarks` já populado com contas, benchmarks, controles e histórico.
+- Isso cria o banco `benchmarks` já populado com contas, benchmarks, controls e histórico.
 
 2. Acessar o PostgreSQL e executar os testes:
 ```bash
@@ -39,14 +39,14 @@ docker compose down
 - **Account_Benchmark (FK)**  
   Tabela de junção N:M, porque um account pode ter vários benchmarks e um benchmark pode ter vários accounts. Possui `createdAt` e `deletedAt`.
 
-- **Controle**  
+- **control**  
   Armazena `id`, `name`, `description`, `benchmark_id` e `state_atual` (ok | alarm). Possui `createdAt` e `deletedAt`.
 
-- **Controle_Historico**  
-  Para registrar mudanças no controle. Campos: `id`, `controle_id`, `account_id` (quem realizou a mudança), `state`, `timestamp`, `createdAt` e `deletedAt`.
+- **control_History**  
+  Para registrar mudanças no control. Campos: `id`, `control_id`, `account_id` (quem realizou a mudança), `state`, `timestamp`, `createdAt` e `deletedAt`.
 
 ### Ideias para evolução do banco e monitoramento
-- Criar controle de produto, para registrar valores ao longo do tempo.
+- Criar control de produto, para registrar valores ao longo do tempo.
 - Monitorar consumo, para verificar frequência de pesquisa/requisição do produto.
 - Captar dados de clientes e criar base de interesses.
 - Gerar gráficos e análises baseados nos dados coletados.
@@ -76,8 +76,8 @@ erDiagram
         datetime createdAt
         datetime deletedAt
     }
-    CONTROLE {
-        int id PK "ID do controle"
+    control {
+        int id PK "ID do control"
         int benchmark_id FK "FK para Benchmark.id"
         string name
         string description
@@ -85,9 +85,9 @@ erDiagram
         datetime createdAt
         datetime deletedAt
     }
-    CONTROLE_HISTORICO {
+    control_history {
         int id PK
-        int controle_id FK "FK para Controle.id"
+        int control_id FK "FK para control.id"
         int account_id FK "FK para Account.id"
         string state "ok | alarm"
         datetime timestamp
@@ -96,63 +96,63 @@ erDiagram
     }
     ACCOUNT ||--o{ ACCOUNT_BENCHMARK : possui
     BENCHMARK ||--o{ ACCOUNT_BENCHMARK : é_acompanhado_por
-    BENCHMARK ||--o{ CONTROLE : possui
-    CONTROLE ||--o{ CONTROLE_HISTORICO : registra_alteracoes
-    ACCOUNT ||--o{ CONTROLE_HISTORICO : realiza_alteracoes
+    BENCHMARK ||--o{ control : possui
+    control ||--o{ control_history : registra_alteracoes
+    ACCOUNT ||--o{ control_history : realiza_alteracoes
 ```
 
 ---
 
 ## 4. Execução de Testes
 
-### Q1 – Listar Benchmark com seus Controles e o estado atual para uma Account
+### Q1 – Listar Benchmark com seus controls e o estado atual para uma Account
 ```sql
 SELECT 
     a.name AS account,
     b.name AS benchmark,
-    c.name AS controle,
+    c.name AS control,
     c.state_atual
 FROM Account a
 JOIN Account_Benchmark ab ON ab.account_id = a.id
 JOIN Benchmark b ON b.id = ab.benchmark_id
-JOIN Controle c ON c.benchmark_id = b.id
+JOIN control c ON c.benchmark_id = b.id
 WHERE a.id = 1; -- Troque pelo ID da conta
 ```
 
-### Q2 – Listar Benchmark com seus Controles e as mudanças de estado em um intervalo
+### Q2 – Listar Benchmark com seus controls e as mudanças de estado em um intervalo
 ```sql
 SELECT 
     a.name AS account,
     b.name AS benchmark,
-    c.name AS controle,
+    c.name AS control,
     h.state,
     h.timestamp
 FROM Account a
 JOIN Account_Benchmark ab ON ab.account_id = a.id
 JOIN Benchmark b ON b.id = ab.benchmark_id
-JOIN Controle c ON c.benchmark_id = b.id
-JOIN Controle_Historico h ON h.controle_id = c.id
+JOIN control c ON c.benchmark_id = b.id
+JOIN control_history h ON h.control_id = c.id
 WHERE a.id = 1
 AND h.timestamp BETWEEN '2025-09-01' AND '2025-09-08'
 ORDER BY h.timestamp;
 ```
 
-### Q3 – Obter Benchmark com seus Controles e o estado em uma data/hora X (snapshot)
+### Q3 – Obter Benchmark com seus controls e o estado em uma data/hora X (snapshot)
 ```sql
 SELECT 
     a.name AS account,
     b.name AS benchmark,
-    c.name AS controle,
+    c.name AS control,
     h.state,
     h.timestamp
 FROM Account a
 JOIN Account_Benchmark ab ON ab.account_id = a.id
 JOIN Benchmark b ON b.id = ab.benchmark_id
-JOIN Controle c ON c.benchmark_id = b.id
-JOIN Controle_Historico h ON h.id = (
+JOIN control c ON c.benchmark_id = b.id
+JOIN control_history h ON h.id = (
     SELECT h2.id
-    FROM Controle_Historico h2
-    WHERE h2.controle_id = c.id
+    FROM control_history h2
+    WHERE h2.control_id = c.id
     AND h2.timestamp <= '2025-09-05 10:00:00'
     ORDER BY h2.timestamp DESC
     LIMIT 1
